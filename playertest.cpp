@@ -32,7 +32,7 @@ int goldloottable[] = {75, 50, 40, 25};
 string thing;
 Player player;
 
-Enemy goblin(10, 5, 100); //maxattac minattack health
+Enemy goblin(10, 5, 100); //maxattack minattack health
 Enemy python(30, 10, 100);
 Enemy robot(17, 7, 500);
 
