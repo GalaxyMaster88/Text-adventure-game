@@ -4,6 +4,8 @@
 #include <ctime> // for time()
 #include <cmath>
 #include <time.h>
+#include <windows.h>
+
 
 #include "include/enemy.h"
 #include "include/player.h"
@@ -11,11 +13,7 @@
 using std::cout, std::string, std::cin, std::endl, std::getline;
 
 //temporary variables storage. need to move somewhere else
-int choice1;
-int choice2;
-int choice3;
-int choice4;
-int choice5;
+int choice;
 int attackturns;
 int damagetaken;
 int damagedone;
@@ -36,7 +34,7 @@ Enemy goblin(10, 5, 100); //maxattack minattack health
 Enemy python(30, 10, 100);
 Enemy robot(17, 7, 500);
 
-void spamattacktutorial();
+bool spamattacktutorial();
 int lvl1();
 int lvl2_1();
 void lvl2_2();
@@ -70,12 +68,10 @@ int main() {
             break;
         }
     } while (inloop);
-
     cout << "\n\nAnnouncer: Welcome to ADVENTURE GAME 1.0\n";
-
     // starthere
-    choice1 = lvl1();
-    switch (choice1){
+    choice = lvl1();
+    switch (choice){
         case 1:
             lvl2_1();
             lvl3_1();
@@ -87,7 +83,7 @@ int main() {
             lvl4_2();
             break;
     }
-    cout << "end";
+    cout << "\nend";
     return 0;
     
 }   
@@ -97,9 +93,9 @@ int main() {
 int lvl1(){
     inloop = true;
     do{
-        cout << "You enter the dungeon and you find a button. Do you push the button? (1) or continue on and see what else you find? (2)\n";
-        cin >> choice1;
-        switch (choice1) {
+        cout << "You enter the dungeon and you find a button. Do you push the button? (1) or continue on and see what else you find? (2) ";
+        cin >> choice;
+        switch (choice) {
             case 1:
                 cout << "You push the button and a trap door opens beneath your feet!\n";
                 player.damage(damagetaken = rand() % 30 + 10);
@@ -117,15 +113,15 @@ int lvl1(){
                 break;
         }
     }while(inloop);
-    return choice1;
+    return choice;
 }
 
 int lvl2_1(){
     inloop = true;
     do{
         cout << "After freeing yourself from the trap you find a treasure chest. How do you open it? Smash it with your sword until it opens? (1) Or try pick the lock? (2)  ";
-        cin >> choice2;
-        switch(choice2){
+        cin >> choice;
+        switch(choice){
             case 1:
                 cout << "You successfully smashed open the chest, however you damaged some of the treasure inside too...\n";
                 cout << "You gained ";
@@ -148,7 +144,7 @@ int lvl2_1(){
                 break;
         }
     }while (inloop);
-    return choice2;
+    return choice;
 }
 
 void lvl2_2(){
@@ -156,8 +152,8 @@ void lvl2_2(){
     cout << "Continuing down the dungeon you encounter an small goblin,";
     do{
         cout << "attack?(1) or try block its attack?(2)";
-        cin >> choice2;
-        switch(choice2){
+        cin >> choice;
+        switch(choice){
             case 1:
                 //attack
                 damagedone = goblin.damage(rand() % (player.maxattack-player.minattack) + player.minattack, "goblin");
@@ -216,7 +212,7 @@ void lvl3_1(){
                     cout << "you dont have enough money to buy that";
                     break;
                 }
-                cout << "New balance is " << (player.gold -=30) << " gold";
+                cout << "New balance is " << (player.gold -=30) << " gold\n";
                 player.heal(50);
                 cout << "You healed 50 health! Your health is now " << player.health << "/" << player.maxhealth << "\n";
                 inloop = false;
@@ -232,8 +228,8 @@ int lvl3_2(){
     inloop = true;
     do{
         cout << "Continuing on, you find a fork in the path. which way do you go? left?(1) or right?(2)";
-        cin >> choice3; 
-        switch(choice3){
+        cin >> choice; 
+        switch(choice){
             case 1:
                 //weapon with heal
                 cout << "You go left and find a skeleton, leaning in to inspect it you find it has a shiny sword\n Bone sword unlocked! This sword allows *crits*";
@@ -248,8 +244,8 @@ int lvl3_2(){
                 attackturns = 1;
                 do{
                     cout << "\nWhere do you attack the snake first? eye(1) nose(2) mouth(3) body(4) tail?(5)";
-                    cin >> choice4;
-                    switch(choice4){
+                    cin >> choice;
+                    switch(choice){
                         case 1:
                             if (attackturns == 3){
                                 python.damage(25, "python");
@@ -323,7 +319,7 @@ int lvl3_2(){
                 if (attackturns > 5){
                     cout << "\nsome reason how the snake killed you because of time";
                 }else{
-                    cout << "good job on defeating snek! you gained 50 gold. current gold balance: " << (player.gold+=50) << "gold";
+                    cout << "good job on defeating snek! you gained 50 gold. Gold balance: " << (player.gold+=50) << "gold";
                 }
                 inloop = false;
                 break;
@@ -332,18 +328,22 @@ int lvl3_2(){
                 break;
         }
     }while(inloop);
-    return choice3;
+    return choice;
 }
 
-void lvl4_1(){ //not finished yet
+void lvl4_1(){ 
     //boss fight
     cout << "Seems that there was an ancient sleeping robot under the skeleton and you accidently woke it up\n";
-    spamattacktutorial(); //to show the user how to use the attack system 
+    cout << "\nBefore you fight this boss heres a quick tutorial to show you how to do it:";
+    while(!(spamattacktutorial())){
+        spamattacktutorial();//to show the user how to use the attack system 
+    } 
     attackturns = 7;
     do{
+        cout << ((robot.health <= 250) ? "Robot: AAaaaaAAaaaAhhh\n": "");
         cout << "do you try attack(1) or block its attack(2)";
-        cin >> choice5;
-        switch(choice5){
+        cin >> choice;
+        switch(choice){
             case 1:
                 time1 = time(NULL);
                 cout << "\nAttack:  ";
@@ -384,16 +384,19 @@ void lvl4_1(){ //not finished yet
                 damagedone = (damagedefended/5);
                 robot.damage(damagedone, "robot");
                 cout << "You did "<< damagedone << " damage  " << robot.health << "/" << robot.maxhealth;
+                player.damage(damagetaken = (rand() % (robot.maxattack-robot.minattack+1) + robot.minattack) - damagedefended);
+                cout << "While you were busy trying to defend yourself the robot went in for the attack. You took " << damagetaken << " damage  " << player.health << "/" << player.maxhealth;                
                 attackturns--;
                 cout << "\n" << attackturns << " turns left\n"; 
                 break;
             default:
-                cout << "pleas only input 1 or 2";
+                cout << "pleas only input 1 or 2\n";
                 break;
         }
-        cout << robot.health << " " << attackturns;
-    }while(attackturns != 0 || robot.health > 0);
-    if (attackturns == 0){
+    }while((attackturns > 0) && (robot.health > 0));
+    if (!robot.health > 0){
+        cout << "good job on defeating the robot! you gained 75 gold. Gold balance: " << (player.gold+=50) << " gold";
+    }else{
         cout << "\nyou ran out of time";
     }
 }
@@ -432,8 +435,8 @@ void lvl4_2(){
                     break;
                 }
                 cout << "New balance is " << (player.gold -=100) << " gold";
-                player.armor=5;
-                cout << "You now have armor! congratulations 5 damage you take will be negated";
+                player.armorstats(1);
+                cout << "You now have knights armor! 5 damage you take will be negated whenever you take damage";
                 inloop = false;
                 break;
             default:
@@ -447,6 +450,40 @@ void lvl4_2(){
 
 
 
-void spamattacktutorial(){
+bool spamattacktutorial(){
+    time1 = time(NULL);
+    cout << "with attacking you have 5 seconds to enter as many 'z' charactors as you can, then press enter";
+    Sleep(2000);
+    cout << "\nAttack:  ";
+    cin >> thing;
+    time2 = time(NULL);
+    if((time2-time1) > 5){
+        cout << "you took too long\n";
+        return false;
+    }
+    damagedone = 0;
+    for(char c : thing){
+        (c=='z') ? damagedone++ : damagedone;
+    }
+    cout << "You did "<< damagedone << " damage (1z = 1 damage)";
 
+    time1 = time(NULL);
+    cout << "with defending you have 5 seconds to enter as many 'x' charactors as you can, then press enter";
+    Sleep(2000);
+    cout << "\nDefend:  ";
+    cin >> thing;
+    time2 = time(NULL);
+    if((time2-time1) > 5){
+        cout << "you took too long\n";
+        return false;
+    }
+    damagedone = 0;
+    damagedefended = 0;
+    for(char c : thing){
+        (c=='x') ? damagedefended++: damagedefended;
+    }
+    damagedone = (damagedefended/5);
+    cout << "You did "<< damagedone << " damage and defended " << damagedefended << "damage (1x = 1 damagedefended | 5x = 1 damage)";
+    cout << "\nNow time for the real fight\n\n";
+    return true;
 }
