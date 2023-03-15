@@ -86,4 +86,12 @@ public:
             critchance = false;
         }
     }
+    void armorstats(int n) {
+        armor = n;
+        if (armor == 1) {
+            armor = 5;
+        } else if (armor == 2) {
+            armor = 10;
+        }
+    }
 };
