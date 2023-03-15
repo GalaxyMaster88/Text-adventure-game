@@ -52,7 +52,7 @@ int main() {
     getline(cin,name);
     player.setname(name);
     player.weaponstats(0);
-    cout << "Hello " << player.name << "\n";
+    cout << "Hello " << player.getname() << '\n';
     char startchoice;
     do {
         cout << "Would you like to start your adventure? (Y/N) ";
@@ -99,13 +99,13 @@ int lvl1(){
             case 1:
                 cout << "You push the button and a trap door opens beneath your feet!\n";
                 player.damage(damagetaken = rand() % 30 + 10);
-                cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 inloop = false;
                 break;
             case 2:
                 cout << "You continue on and find a chest with a healing potion!\n";
                 player.heal(rand() % 30 + 10); // random healing between 10 and 40
-                cout << "Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                cout << "Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 inloop = false;
                 break;
             default:
@@ -126,7 +126,7 @@ int lvl2_1(){
                 cout << "You successfully smashed open the chest, however you damaged some of the treasure inside too...\n";
                 cout << "You gained ";
                 goldgained = rand() % 15 + 10;
-                cout << goldgained << " gold! " << "Total gold: " << (player.gold += goldgained) << "\n";
+                cout << goldgained << " gold! " << "Total gold: " << (player.gold += goldgained) << '\n';
                 inloop = false;
                 break;
             case 2:
@@ -134,11 +134,11 @@ int lvl2_1(){
                     cout << "You swiftly picked the lock!\n";
                     cout << "You gained ";
                     goldgained = rand() % 40 + 10;
-                    cout << goldgained << " gold! " << "Total gold: " << (player.gold += goldgained) << "\n";
+                    cout << goldgained << " gold! " << "Total gold: " << (player.gold += goldgained) << '\n';
                 } else {
                     cout << "You failed to pick the lock and triggered a trap!\n";
                     player.damage(damagetaken = rand() % 30 + 10);
-                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 }
                 inloop = false;
                 break;
@@ -157,12 +157,12 @@ void lvl2_2(){
             case 1:
                 //attack
                 damagedone = goblin.damage(rand() % (player.maxattack-player.minattack) + player.minattack, "goblin");
-                cout << "You did " << damagedone << " damage to the goblin" << " | " << goblin.health << "/" << goblin.maxhealth << "\n";    
+                cout << "You did " << damagedone << " damage to the goblin" << " | " << goblin.health << "/" << goblin.maxhealth << '\n';    
                 //counter by goblin
                 counterchance = rand() % 2;
                 if(counterchance == 0){
                     player.damage(damagetaken = rand() % (goblin.maxattack-goblin.minattack+1) + goblin.minattack);
-                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 }
                 inloop = false;
                 break;
@@ -176,7 +176,7 @@ void lvl2_2(){
                 }else{
                     cout << "you failed to block the goblins attack";
                     damagedone = player.damage(rand() % (goblin.maxattack-goblin.minattack+1) + goblin.minattack);
-                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                    cout << "You take " << damagetaken << " damage. Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 }
                 inloop = false;
                 break;
@@ -214,7 +214,7 @@ void lvl3_1(){
                 }
                 cout << "New balance is " << (player.gold -=30) << " gold\n";
                 player.heal(50);
-                cout << "You healed 50 health! Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                cout << "You healed 50 health! Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 inloop = false;
                 break;
             default:
@@ -365,7 +365,7 @@ void lvl4_1(){
                     cout << "You left yourself wide open for an attack! You took " << damagetaken << " damage  " << player.health << "/" << player.maxhealth;
                 }
                 attackturns--;
-                cout << "\n" << attackturns << " turns left\n"; 
+                cout << '\n' << attackturns << " turns left\n"; 
                 break;
             case 2:
                 time1 = time(NULL);
@@ -387,7 +387,7 @@ void lvl4_1(){
                 player.damage(damagetaken = (rand() % (robot.maxattack-robot.minattack+1) + robot.minattack) - damagedefended);
                 cout << "While you were busy trying to defend yourself the robot went in for the attack. You took " << damagetaken << " damage  " << player.health << "/" << player.maxhealth;                
                 attackturns--;
-                cout << "\n" << attackturns << " turns left\n"; 
+                cout << '\n' << attackturns << " turns left\n"; 
                 break;
             default:
                 cout << "pleas only input 1 or 2\n";
@@ -426,7 +426,7 @@ void lvl4_2(){
                 }
                 cout << "New balance is " << (player.gold -=35) << " gold";
                 player.heal(75);
-                cout << "You healed 75 health! Your health is now " << player.health << "/" << player.maxhealth << "\n";
+                cout << "You healed 75 health! Your health is now " << player.health << "/" << player.maxhealth << '\n';
                 inloop = false;
                 break;
             case 3:

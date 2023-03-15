@@ -9,7 +9,6 @@ using std::cout, std::string, std::cin, std::endl, std::getline;
 
 class Player {
 public:
-    string name;
     int health = 100;
     const int maxhealth = 100;
     const int starting_gold = 50;
@@ -27,6 +26,9 @@ public:
 
     void setname(string n){
         name = n;
+    }
+    string getname(){
+        return name;
     }
 
     int damage(int n) {
@@ -94,4 +96,7 @@ public:
             armor = 10;
         }
     }
+private:
+    string name;
+
 };
